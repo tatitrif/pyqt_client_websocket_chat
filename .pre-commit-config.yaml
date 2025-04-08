@@ -1,0 +1,81 @@
+exclude: "^tests/"
+
+default_language_version:
+  python: python3.12
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # file
+      - id: end-of-file-fixer
+        description: Fixes missing end-of-file newline in files.
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+        description: Forces to replace line ending by the UNIX 'lf' character.
+      - id: trailing-whitespace
+        exclude: ^tests/fixtures/
+        description: Trims trailing whitespace.
+      - id: check-added-large-files
+        args: ["--maxkb=100"]
+        description: Checks for large files being added to git.
+      # format
+      - id: check-yaml
+      - id: check-toml
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-docstring-first
+      - id: debug-statements
+      - id: check-builtin-literals
+      - id: detect-private-key
+      - id: name-tests-test
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.8
+    hooks:
+      - id: ruff
+        args:
+          - --fix
+      - id: ruff-format
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.15.0
+    hooks:
+      - id: pyupgrade
+        args: [--py312-plus]
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        name: flake8
+        types: [python]
+        args:
+          - --max-line-length=120
+          - --ignore=B008,W503
+        additional_dependencies:
+          - flake8-bugbear
+          - flake8-print
+  - repo: https://github.com/rbubley/mirrors-prettier
+    rev: "v3.4.2"
+    hooks:
+      - id: prettier
+        types_or: [yaml, markdown, toml]
+
+  - repo: https://github.com/myint/docformatter
+    rev: v1.7.5
+    hooks:
+      - id: docformatter
+        args:
+          [
+            "--in-place",
+            "--pre-summary-newline",
+            "--wrap-descriptions=88",
+            "--wrap-summaries=88",
+          ]
+        types: [python]
+
+  - repo: https://github.com/pycqa/bandit
+    rev: 1.7.9
+    hooks:
+      - id: bandit
+        args: ["-c", "pyproject.toml", "-r"]
