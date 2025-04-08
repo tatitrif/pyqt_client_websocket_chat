@@ -55,10 +55,10 @@ class Chat(QtWidgets.QMainWindow):
                 data = {"username": username, "password": password}
                 response = requests.post(url, data=data, timeout=10)
                 response_content = json.loads(response.content)
-                if response.status_code == 200:
+                if response.ok:
                     self.access_token = response_content.get("access_token")
 
-                    self.ui.label_2.setText("")
+                    self.ui.label_2.clear()
                     # открываем возможность ввода сообщения
                     self.ui.msg_line.setEnabled(True)
                     self.ui.send.setEnabled(True)
@@ -72,7 +72,6 @@ class Chat(QtWidgets.QMainWindow):
         except requests.exceptions.RequestException as err:
             self.ui.label_2.setText("Connection error")
             logger.error(f"Request sending error: {err}")
-
         except Exception as err:
             logger.error(f"Exception: {err}")
 
@@ -101,6 +100,10 @@ class Chat(QtWidgets.QMainWindow):
             # в случае любой ошибки блочим открытые инпуты
             self.ui.msg_line.setEnabled(False)
             self.ui.send.setEnabled(False)
+            # блокируем возможность ввода другого никнейма
+            self.ui.username.setEnabled(True)
+            self.ui.password.setEnabled(True)
+            self.ui.ok.setEnabled(True)
 
     def write(self):
         """Отправляет сообщение серверу."""

@@ -1,6 +1,6 @@
 # pyqt_client_websocket_chat
 
-PyQt клиент, сервер: [Async FastApi Project
+PyQt клиент Мессенжера, сервер websocket: [Async FastApi Project
 ](https://github.com/tatitrif/asyncFastApi-Base)
 
 ## Используемые технологии
