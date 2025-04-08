@@ -5,7 +5,7 @@ import sys
 import threading
 
 import requests
-from PyQt6 import uic, QtWidgets, QtGui
+from PyQt6 import uic, QtWidgets, QtGui, QtCore
 from websockets.sync import client
 from websockets.sync.client import ClientConnection
 
@@ -78,6 +78,12 @@ class Chat(QtWidgets.QMainWindow):
         # стартуем поток, который постоянно будет пытаться получить сообщения
         receive_thread = threading.Thread(target=self.receive)
         receive_thread.start()
+
+    def keyPressEvent(self, e):
+        if e.key() in [QtCore.Qt.Key.Key_Enter, QtCore.Qt.Key.Key_Return]:
+            self.write()
+        else:
+            super().keyPressEvent(e)
 
     def receive(self):
         """Получение сообщений от других клиентов."""
